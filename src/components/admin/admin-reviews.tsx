@@ -143,7 +143,7 @@ export function AdminReviews({ initialReviews }: { initialReviews: Review[] }) {
               <div className="rounded-xl border bg-linear-to-b from-background to-muted/30 p-4">
                 <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
                   <Upload className="size-3.5" />
-                  <span>Upload up to 10 images (max 4MB each)</span>
+                  <span>Upload up to 10 images (max 20MB each)</span>
                 </div>
                 <UploadDropzone
                   endpoint="serviceImage"

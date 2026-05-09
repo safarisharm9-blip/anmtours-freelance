@@ -20,21 +20,29 @@ const item = {
   visible: { opacity: 1, y: 0 },
 };
 
-export function Hero() {
+type HeroProps = {
+  backgroundImageUrl?: string;
+  backgroundImageLabel?: string;
+};
+
+export function Hero({ backgroundImageUrl, backgroundImageLabel }: HeroProps) {
   const t = useTranslations("Hero");
   const bgImage = EGYPT_HERO_IMAGES[HERO_IMAGE_INDEX];
+  const imageSrc = backgroundImageUrl || "/background.jpg";
+  const imageAlt = backgroundImageLabel || bgImage.label;
 
   return (
-    <section className="relative min-h-[95vh] overflow-hidden">
+    <section className="relative min-h-[95vh] overflow-hidden bg-slate-900">
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          // src={bgImage.url}
-          src="/background.jpg"
-          alt={bgImage.label}
+          src={imageSrc}
+          alt={imageAlt}
           fill
           className="object-cover"
           priority
+          fetchPriority="high"
+          quality={85}
           sizes="100vw"
         />
         {/* Dark overlay for text readability */}

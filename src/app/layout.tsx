@@ -37,6 +37,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
+        <head>
+          <link rel="preconnect" href="https://images.unsplash.com" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://utfs.io" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://img.clerk.com" crossOrigin="anonymous" />
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >

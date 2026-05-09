@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Link, useRouter } from "@/i18n/navigation";
-import { Users, Package, ChevronDown, Pencil, Trash2, Calendar, MessageSquare } from "lucide-react";
+import { Users, Package, ChevronDown, Pencil, Trash2, Calendar, MessageSquare, Home } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AdminBookings } from "./admin-bookings";
 import { AdminReviews } from "./admin-reviews";
+import { AdminHomepageSettings } from "./admin-homepage-settings";
 
 type User = {
   id: string;
@@ -64,7 +65,17 @@ type AdminDashboardProps = {
   users: User[];
   services: Service[];
   bookings: Booking[];
-  reviews: any[];
+  reviews: Array<{
+    id: string;
+    authorName: string;
+    authorImage: string | null;
+    rating: number;
+    text: string;
+    images: string[];
+    addedAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  }>;
 };
 
 export function AdminDashboard({
@@ -73,7 +84,7 @@ export function AdminDashboard({
   bookings,
   reviews,
 }: AdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<"users" | "services" | "bookings" | "reviews">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "services" | "bookings" | "reviews" | "homepage">("users");
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -118,6 +129,11 @@ export function AdminDashboard({
                 <Calendar className="size-4 mr-2" />
                 Bookings ({bookings.length})
               </>
+            ) : activeTab === "homepage" ? (
+              <>
+                <Home className="size-4 mr-2" />
+                Homepage
+              </>
             ) : (
               <>
                 <MessageSquare className="size-4 mr-2" />
@@ -139,6 +155,10 @@ export function AdminDashboard({
           <DropdownMenuItem onClick={() => setActiveTab("bookings")}>
             <Calendar className="size-4 mr-2" />
             Bookings ({bookings.length})
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setActiveTab("homepage")}>
+            <Home className="size-4 mr-2" />
+            Homepage
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setActiveTab("reviews")}>
             <MessageSquare className="size-4 mr-2" />
@@ -307,6 +327,8 @@ export function AdminDashboard({
       {activeTab === "reviews" && (
         <AdminReviews initialReviews={reviews} />
       )}
+
+      {activeTab === "homepage" && <AdminHomepageSettings />}
     </div>
   );
 }

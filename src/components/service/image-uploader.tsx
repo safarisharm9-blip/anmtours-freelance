@@ -16,8 +16,8 @@ export function CoverImageUploader({ value, onChange, disabled }: ImageUploaderP
   const inputRef = useRef<HTMLInputElement>(null);
   const { startUpload, isUploading } = useUploadThing("serviceImage", {
     onClientUploadComplete: (res) => {
-      if (res?.[0]?.ufsUrl) {
-        onChange(res[0].ufsUrl);
+      if (res?.[0]?.url) {
+        onChange(res[0].url);
       }
     },
   });
@@ -88,7 +88,7 @@ export function GalleryImageUploader({ value, onChange, disabled }: GalleryUploa
   const { startUpload, isUploading } = useUploadThing("serviceImage", {
     onClientUploadComplete: (res) => {
       if (res?.length) {
-        const urls = res.map((f) => f.ufsUrl).filter(Boolean);
+        const urls = res.map((f) => f.url).filter(Boolean);
         onChange([...value, ...urls]);
       }
     },

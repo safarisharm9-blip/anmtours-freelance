@@ -5,7 +5,7 @@ const f = createUploadthing();
 export const ourFileRouter = {
   serviceImage: f({
     image: {
-      maxFileSize: "4MB",
+      maxFileSize: "16MB",
       maxFileCount: 10,
     },
   })
@@ -13,7 +13,8 @@ export const ourFileRouter = {
       return {};
     })
     .onUploadComplete(async ({ file }) => {
-      return { url: file.ufsUrl };
+      console.log("Upload complete for hero image:", file.url);
+      return { url: file.url };
     }),
 } satisfies FileRouter;
 

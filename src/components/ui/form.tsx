@@ -45,8 +45,27 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState } = useFormContext()
-  const formState = useFormState({ name: fieldContext.name })
+  const formContext = useFormContext()
+  const formState = useFormState({ 
+    name: fieldContext.name,
+    control: formContext?.control 
+  })
+
+  if (!formContext) {
+    return {
+      id: itemContext.id,
+      name: fieldContext.name,
+      formItemId: `${itemContext.id}-form-item`,
+      formDescriptionId: `${itemContext.id}-form-item-description`,
+      formMessageId: `${itemContext.id}-form-item-message`,
+      invalid: false,
+      isDirty: false,
+      isTouched: false,
+      error: undefined,
+    }
+  }
+
+  const { getFieldState } = formContext
   const fieldState = getFieldState(fieldContext.name, formState)
 
   if (!fieldContext) {
