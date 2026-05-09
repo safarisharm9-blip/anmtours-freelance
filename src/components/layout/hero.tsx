@@ -29,7 +29,8 @@ export function Hero() {
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
-          src={bgImage.url}
+          // src={bgImage.url}
+          src="/background.jpg"
           alt={bgImage.label}
           fill
           className="object-cover"
