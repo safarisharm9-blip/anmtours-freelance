@@ -6,7 +6,7 @@ import { getAllUsers, getAllServices, getAllBookings } from "@/lib/admin";
 import { getServiceDetailForLocale } from "@/lib/services";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import { getReviews } from "@/app/actions/reviews";
-
+// hee
 type Props = {
   params: Promise<{ locale: string }>;
 };
