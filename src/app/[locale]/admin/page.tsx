@@ -6,7 +6,6 @@ import { getAllUsers, getAllServices, getAllBookings } from "@/lib/admin";
 import { getServiceDetailForLocale } from "@/lib/services";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import { getReviews } from "@/app/actions/reviews";
-// hee
 type Props = {
   params: Promise<{ locale: string }>;
 };
@@ -50,7 +49,7 @@ export default async function AdminPage({ params }: Props) {
 
   return (
     <div className="max-w-7xl mx-auto px-12 md:px-0 py-12">
-      <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8">Admin Dash board</h1>
       <AdminDashboard
         users={users}
         services={servicesWithTitles}
