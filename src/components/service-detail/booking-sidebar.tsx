@@ -12,7 +12,16 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+
+declare global {
+  interface Window {
+    Checkout?: {
+      configure: (options: { session: { id: string } }) => void;
+      showPaymentPage: () => void;
+    };
+  }
+}
 
 type BookingSidebarProps = {
   serviceId?: string;
@@ -53,7 +62,9 @@ export function BookingSidebar({
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
   const [infants, setInfants] = useState(0);
-  const t = useTranslations("BookingSidebar")
+  const [isStartingPayment, setIsStartingPayment] = useState(false);
+  const t = useTranslations("BookingSidebar");
+  const locale = useLocale();
 
   const subtotal = adults * priceAdult + children * priceKids;
   // const tax = Math.round(subtotal * 0.025);
@@ -65,7 +76,12 @@ export function BookingSidebar({
       alert(t("selectDate"));
       return;
     }
+    if (adults + children < 1) {
+      alert(t("selectTraveler"));
+      return;
+    }
 
+    setIsStartingPayment(true);
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
@@ -74,18 +90,35 @@ export function BookingSidebar({
           date: date.toISOString(),
           adults,
           children,
-          total,
+          locale,
           ...(serviceId && { serviceId }),
         }),
       });
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error ?? "Failed to create booking");
+        throw new Error(err.error ?? "Failed to start payment");
       }
-      alert(t("bookingSuccess"));
+
+      const checkout = (await res.json()) as {
+        sessionId: string;
+        checkoutScriptUrl: string;
+      };
+
+      await loadCheckoutScript(checkout.checkoutScriptUrl);
+      if (!window.Checkout) {
+        throw new Error("Payment checkout failed to load");
+      }
+
+      window.Checkout.configure({
+        session: {
+          id: checkout.sessionId,
+        },
+      });
+      window.Checkout.showPaymentPage();
     } catch (e) {
       alert(e instanceof Error ? e.message : t("bookingError"));
+      setIsStartingPayment(false);
     }
   };
 
@@ -250,8 +283,16 @@ export function BookingSidebar({
           <span>${total.toLocaleString()}</span>
         </div>
       </div>
-      <Button onClick={handleRequestBooking} className="w-full bg-teal-600">
-        {user.user ? t("requestBooking") : t("signInToRequestBooking")}
+      <Button
+        onClick={handleRequestBooking}
+        className="w-full bg-teal-600"
+        disabled={isStartingPayment}
+      >
+        {isStartingPayment
+          ? t("paymentStarting")
+          : user.user
+            ? t("payAndBook")
+            : t("signInToRequestBooking")}
       </Button>
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -260,4 +301,29 @@ export function BookingSidebar({
       </div>
     </div>
   );
+}
+
+function loadCheckoutScript(src: string) {
+  return new Promise<void>((resolve, reject) => {
+    if (window.Checkout) {
+      resolve();
+      return;
+    }
+
+    const existing = document.querySelector<HTMLScriptElement>(
+      `script[src="${src}"]`
+    );
+    if (existing) {
+      existing.addEventListener("load", () => resolve(), { once: true });
+      existing.addEventListener("error", () => reject(), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Payment checkout failed to load"));
+    document.body.appendChild(script);
+  });
 }

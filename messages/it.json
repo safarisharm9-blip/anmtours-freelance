@@ -229,10 +229,13 @@
   },
   "BookingSidebar": {
     "requestBooking": "Richiedi prenotazione",
-    "signInToRequestBooking": "Accedi per richiedere una prenotazione",
+    "payAndBook": "Paga e prenota",
+    "signInToRequestBooking": "Accedi per pagare e prenotare",
     "selectDate": "Seleziona una data",
+    "selectTraveler": "Seleziona almeno un viaggiatore",
+    "paymentStarting": "Apertura pagamento sicuro...",
     "bookingSuccess": "Richiesta di prenotazione inviata",
-    "bookingError": "Impossibile inviare la prenotazione"
+    "bookingError": "Impossibile avviare il pagamento"
   },
     "testimonials": "Testimonianze",
   "testimonials-descriptions": "Scopri cosa dicono i nostri clienti sulla loro esperienza di lavoro con noi."

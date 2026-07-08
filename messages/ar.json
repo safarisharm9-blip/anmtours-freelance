@@ -229,10 +229,13 @@
   },
   "BookingSidebar": {
     "requestBooking": "طلب الحجز",
-    "signInToRequestBooking": "تسجيل الدخول لطلب الحجز",
+    "payAndBook": "ادفع واحجز",
+    "signInToRequestBooking": "سجّل الدخول للدفع والحجز",
     "selectDate": "يرجى اختيار تاريخ",
+    "selectTraveler": "يرجى اختيار مسافر واحد على الأقل",
+    "paymentStarting": "جارٍ فتح الدفع الآمن...",
     "bookingSuccess": "تم إرسال طلب الحجز بنجاح",
-    "bookingError": "فشل في إرسال الحجز"
+    "bookingError": "تعذر بدء عملية الدفع"
   },
     "testimonials": "اراء",
   "testimonials-descriptions": "تعرف على ما يقوله عملاؤنا عن تجربتهم في العمل معنا."

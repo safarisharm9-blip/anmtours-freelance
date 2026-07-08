@@ -229,10 +229,13 @@
   },
   "BookingSidebar": {
     "requestBooking": "Request Booking",
-    "signInToRequestBooking": "Sign in to request booking",
+    "payAndBook": "Pay & Book",
+    "signInToRequestBooking": "Sign in to pay and book",
     "selectDate": "Please select a date",
+    "selectTraveler": "Please select at least one traveler",
+    "paymentStarting": "Opening secure payment...",
     "bookingSuccess": "Booking request submitted successfully",
-    "bookingError": "Failed to submit booking"
+    "bookingError": "Failed to start payment"
   },
   "testimonials": "Testimonials",
   "testimonials-descriptions": "See what our clients say about their experience working with us."

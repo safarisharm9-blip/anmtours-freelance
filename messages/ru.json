@@ -229,10 +229,13 @@
   },
   "BookingSidebar": {
     "requestBooking": "Запросить бронирование",
-    "signInToRequestBooking": "Войдите для запроса бронирования",
+    "payAndBook": "Оплатить и забронировать",
+    "signInToRequestBooking": "Войдите, чтобы оплатить и забронировать",
     "selectDate": "Выберите дату",
+    "selectTraveler": "Выберите хотя бы одного путешественника",
+    "paymentStarting": "Открываем безопасную оплату...",
     "bookingSuccess": "Запрос на бронирование отправлен",
-    "bookingError": "Не удалось отправить бронирование"
+    "bookingError": "Не удалось начать оплату"
   },
     "testimonials": "Отзывы",
   "testimonials-descriptions": "Посмотрите, что говорят наши клиенты о своем опыте сотрудничества с нами."

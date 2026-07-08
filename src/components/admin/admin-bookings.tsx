@@ -12,6 +12,11 @@ type Booking = {
   adults: number;
   children: number;
   total: number;
+  currency: string;
+  bookingStatus: string;
+  paymentStatus: string;
+  mpgsOrderId?: string | null;
+  paidAt?: Date | null;
   createdAt: Date;
   user: {
     id: string;
@@ -80,6 +85,8 @@ export function AdminBookings({ bookings }: AdminBookingsProps) {
                   <th className="text-left py-3 px-4">Service</th>
                   <th className="text-left py-3 px-4">Travelers</th>
                   <th className="text-left py-3 px-4">Total</th>
+                  <th className="text-left py-3 px-4">Payment</th>
+                  <th className="text-left py-3 px-4">MPGS Order</th>
                   <th className="text-left py-3 px-4">Booked At</th>
                   <th className="text-left py-3 px-4">Actions</th>
                 </tr>
@@ -123,7 +130,34 @@ export function AdminBookings({ bookings }: AdminBookingsProps) {
                         `, ${booking.children} child${booking.children !== 1 ? "ren" : ""}`}
                     </td>
                     <td className="py-3 px-4 font-medium">
-                      ${booking.total.toLocaleString()}
+                      {booking.currency ?? "USD"} {booking.total.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="space-y-1">
+                        <span
+                          className={
+                            booking.paymentStatus === "PAID"
+                              ? "rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-700"
+                              : booking.paymentStatus === "FAILED" ||
+                                  booking.paymentStatus === "CANCELLED"
+                                ? "rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive"
+                                : "rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-700"
+                          }
+                        >
+                          {booking.paymentStatus}
+                        </span>
+                        <span className="block text-xs text-muted-foreground">
+                          {booking.bookingStatus}
+                        </span>
+                        {booking.paidAt && (
+                          <span className="block text-xs text-muted-foreground">
+                            Paid {format(new Date(booking.paidAt), "PPp")}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="py-3 px-4 text-xs text-muted-foreground">
+                      {booking.mpgsOrderId ?? "—"}
                     </td>
                     <td className="py-3 px-4 text-muted-foreground text-xs">
                       {format(new Date(booking.createdAt), "PPp")}

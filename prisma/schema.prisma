@@ -26,6 +26,22 @@ enum UserRole {
   ADMIN
 }
 
+enum BookingStatus {
+  PENDING_PAYMENT
+  CONFIRMED
+  CANCELLED
+  PAYMENT_FAILED
+  EXPIRED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELLED
+  REFUNDED
+}
+
 // User - synced from Clerk
 model User {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -84,11 +100,30 @@ model ServiceEmbedding {
 
 
 model Booking {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  date      DateTime
-  adults    Int
-  children  Int
-  total     Float
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  date     DateTime
+  adults   Int
+  children Int
+  total    Float
+  currency String   @default("USD")
+
+  bookingStatus BookingStatus @default(PENDING_PAYMENT)
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentProvider String      @default("MPGS")
+
+  mpgsOrderId          String?
+  mpgsSessionId        String?
+  mpgsSuccessIndicator String?
+  mpgsResultIndicator  String?
+  mpgsTransactionId    String?
+  mpgsOrderStatus      String?
+  mpgsResult           String?
+  paymentRaw           Json?
+
+  paymentAttemptedAt DateTime?
+  paidAt             DateTime?
+  paymentFailedAt    DateTime?
+  cancelledAt        DateTime?
 
   user      UserSnapshot
 
@@ -97,6 +132,8 @@ model Booking {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([mpgsOrderId])
 }
 
 

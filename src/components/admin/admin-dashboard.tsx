@@ -44,6 +44,11 @@ type Booking = {
   adults: number;
   children: number;
   total: number;
+  currency: string;
+  bookingStatus: string;
+  paymentStatus: string;
+  mpgsOrderId?: string | null;
+  paidAt?: Date | null;
   createdAt: Date;
   user: {
     id: string;
