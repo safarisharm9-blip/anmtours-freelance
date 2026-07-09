@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { sendBookingInvoiceEmail } from "./booking-invoice";
 import { getMpgsOrderSummary, retrieveMpgsOrder } from "./mpgs";
 
 type ConfirmBookingPaymentInput = {
@@ -37,6 +38,10 @@ export async function confirmBookingPayment({
   }
 
   if (booking.paymentStatus === "PAID") {
+    await sendBookingInvoiceEmail(booking.id).catch((error) => {
+      console.error("Failed to send booking invoice email:", error);
+    });
+
     return {
       ok: true,
       paid: true,
@@ -97,6 +102,12 @@ export async function confirmBookingPayment({
       paymentFailedAt: summary.isPaid ? booking.paymentFailedAt : now,
     },
   });
+
+  if (summary.isPaid) {
+    await sendBookingInvoiceEmail(booking.id).catch((error) => {
+      console.error("Failed to send booking invoice email:", error);
+    });
+  }
 
   return {
     ok: true,

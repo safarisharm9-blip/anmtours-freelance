@@ -39,6 +39,14 @@ Edit `.env` and add your MongoDB connection string:
 DATABASE_URL="mongodb+srv://username:password@cluster.mongodb.net/travel_agency?retryWrites=true&w=majority"
 ```
 
+For booking invoice emails, configure Resend:
+
+```
+RESEND_API_KEY="re_..."
+INVOICE_FROM_EMAIL="A&M Tours <bookings@yourdomain.com>"
+INVOICE_ADMIN_EMAIL="safarisharm9@gmail.com"
+```
+
 3. Generate the Prisma client (runs automatically on `npm install`):
 
 ```bash

@@ -125,6 +125,11 @@ model Booking {
   paymentFailedAt    DateTime?
   cancelledAt        DateTime?
 
+  invoiceNumber         String?
+  invoiceEmailSentAt    DateTime?
+  invoiceEmailSendingAt DateTime?
+  invoiceEmailError     String?
+
   user      UserSnapshot
 
   serviceId String?  @db.ObjectId

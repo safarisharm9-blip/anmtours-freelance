@@ -10,7 +10,7 @@ export const SITE_CONFIG = {
     defaultMessage: "Hi! I'm interested in your tours. Can you help me?",
   },
   contact: {
-    email:"a&mtours@gmail.com",
+    email: "safarisharm9@gmail.com",
     phone: "+201229172336",
     location: "A&M Tours  - Sharm El-Sheikh",
   },
