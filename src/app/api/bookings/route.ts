@@ -106,6 +106,10 @@ export async function POST(request: Request) {
       paymentStatus: "PENDING",
       paymentProvider: "MPGS",
       paymentAttemptedAt: new Date(),
+      invoiceNumber: null,
+      invoiceEmailSentAt: null,
+      invoiceEmailSendingAt: null,
+      invoiceEmailError: null,
       user: {
           id: user.id,
           email: user.email,

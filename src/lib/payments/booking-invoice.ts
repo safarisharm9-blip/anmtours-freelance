@@ -29,10 +29,18 @@ export async function sendBookingInvoiceEmail(bookingId: string) {
     where: {
       id: booking.id,
       paymentStatus: "PAID",
-      invoiceEmailSentAt: null,
       OR: [
-        { invoiceEmailSendingAt: null },
-        { invoiceEmailSendingAt: { lt: staleLockDate } },
+        { invoiceEmailSentAt: null },
+        { invoiceEmailSentAt: { isSet: false } },
+      ],
+      AND: [
+        {
+          OR: [
+            { invoiceEmailSendingAt: null },
+            { invoiceEmailSendingAt: { isSet: false } },
+            { invoiceEmailSendingAt: { lt: staleLockDate } },
+          ],
+        },
       ],
     },
     data: {
