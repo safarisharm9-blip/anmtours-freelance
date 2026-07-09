@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { useUser } from "@clerk/nextjs";
+import { SignInButton, useUser } from "@clerk/nextjs";
 import { useLocale, useTranslations } from "next-intl";
 
 declare global {
@@ -56,7 +56,7 @@ export function BookingSidebar({
   bookButtonLabel,
   secureLabel,
 }: BookingSidebarProps) {
-  const user = useUser();
+  const { isLoaded, isSignedIn } = useUser();
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [adults, setAdults] = useState(1);
@@ -71,7 +71,7 @@ export function BookingSidebar({
   const total = subtotal;
 
   const handleRequestBooking = async () => {
-    if (!user.user) return;
+    if (!isSignedIn) return;
     if (!date) {
       alert(t("selectDate"));
       return;
@@ -283,17 +283,21 @@ export function BookingSidebar({
           <span>${total.toLocaleString()}</span>
         </div>
       </div>
-      <Button
-        onClick={handleRequestBooking}
-        className="w-full bg-teal-600"
-        disabled={isStartingPayment}
-      >
-        {isStartingPayment
-          ? t("paymentStarting")
-          : user.user
-            ? t("payAndBook")
-            : t("signInToRequestBooking")}
-      </Button>
+      {isSignedIn ? (
+        <Button
+          onClick={handleRequestBooking}
+          className="w-full bg-teal-600"
+          disabled={isStartingPayment}
+        >
+          {isStartingPayment ? t("paymentStarting") : t("payAndBook")}
+        </Button>
+      ) : (
+        <SignInButton mode="redirect">
+          <Button className="w-full bg-teal-600" disabled={!isLoaded}>
+            {t("signInToRequestBooking")}
+          </Button>
+        </SignInButton>
+      )}
 
       <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <span>🔒</span>
