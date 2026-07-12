@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { useLocale } from "next-intl";
-import { Globe, Menu, LayoutDashboard, Plus } from "lucide-react";
+import { Globe, Menu, LayoutDashboard, Plus, UserRound } from "lucide-react";
 import { usePathname } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import Image from "next/image";
@@ -85,6 +85,11 @@ export function Navbar({ isAdmin = false }: NavbarProps) {
               }}
             >
               <UserButton.MenuItems>
+                <UserButton.Link
+                  label="My bookings"
+                  href={`/${locale}/profile`}
+                  labelIcon={<UserRound className="size-4" />}
+                />
                 {isAdmin && (
                   <UserButton.Link
                     label="Admin"
@@ -180,6 +185,13 @@ export function Navbar({ isAdmin = false }: NavbarProps) {
                   </SignedOut>
                   <SignedIn>
                     <div className="flex flex-col gap-2">
+                      <Link
+                        href="/profile"
+                        className="flex items-center gap-3 rounded-lg px-4 py-3 hover:bg-accent"
+                      >
+                        <UserRound className="size-4" />
+                        <span className="text-sm font-medium">My bookings</span>
+                      </Link>
                       {isAdmin && (
                         <Link
                           href="/admin"
