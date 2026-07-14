@@ -1,25 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
+import { getCurrentAdmin } from "@/lib/admin-auth";
 
 export async function updateHeroImageSettings(data: {
   heroImageUrl?: string;
   heroImageLabel?: string;
 }) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      return { success: false, error: "Unauthorized" };
-    }
-
-    const currentUser = await prisma.user.findUnique({
-      where: { clerkId: userId },
-      select: { role: true },
-    });
-
-    if (currentUser?.role !== "ADMIN") {
+    const currentAdmin = await getCurrentAdmin();
+    if (!currentAdmin) {
       return { success: false, error: "Forbidden" };
     }
 

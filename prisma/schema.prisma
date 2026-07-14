@@ -42,62 +42,77 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum ManualInvoiceStatus {
+  DRAFT
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+enum ManualPaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CARD
+  OTHER
+}
+
 // User - synced from Clerk
 model User {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  clerkId      String   @unique // Clerk user ID
-  email        String?
-  firstName    String?
-  lastName     String?
-  imageUrl     String?
-  gender       String?  // male, female, other, prefer_not_to_say
-  phoneNumber  String?
-  role         UserRole @default(USER)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId     String   @unique // Clerk user ID
+  email       String?
+  firstName   String?
+  lastName    String?
+  imageUrl    String?
+  gender      String? // male, female, other, prefer_not_to_say
+  phoneNumber String?
+  role        UserRole @default(USER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 // Travel service with multi-language support (single-day trips)
 model Service {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  coverImage      String?  // UploadThing URL
+  coverImage      String? // UploadThing URL
   images          String[] // Array of UploadThing URLs
-  details         Json     // [{lang, title, description}, ...] description is markdown
-  highlights      Json?    // [{lang, items: string[]}]
-  includes        Json?    // [{lang, items: string[]}]
-  excludes        Json?    // [{lang, items: string[]}]
-  goodToKnow      Json?    // [{lang, items: string[]}]
+  details         Json // [{lang, title, description}, ...] description is markdown
+  highlights      Json? // [{lang, items: string[]}]
+  includes        Json? // [{lang, items: string[]}]
+  excludes        Json? // [{lang, items: string[]}]
+  goodToKnow      Json? // [{lang, items: string[]}]
   priceAdult      Float
   priceKids       Float    @default(0)
-  duration        String?  // e.g. "1 day", "Half day"
-  location        String?  // Country/city
-  category        String?  // adventure, beach, cultural, etc.
-  maxParticipants Int?     // Optional group size limit
+  duration        String? // e.g. "1 day", "Half day"
+  location        String? // Country/city
+  category        String? // adventure, beach, cultural, etc.
+  maxParticipants Int? // Optional group size limit
   isActive        Boolean  @default(true)
 
   serviceLocation String @default("sharm-elsheikh")
 
-  slug            String   @unique
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  bookings        Booking[]
-  embedding       ServiceEmbedding?
+  bookings  Booking[]
+  embedding ServiceEmbedding?
 }
 
 model ServiceEmbedding {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  serviceId        String   @unique @db.ObjectId
-  service          Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  embedding        Json     // Array of floats from OpenAI embedding
-  content          String   // Text used for embedding
-  tags             String[]
-  targetAudience   String[] // couples, families, kids, groups
-  physicalLevel    String?  // Easy, Moderate, Hard
-  bestTimeOfDay    String?  // Morning, Sunset, Night
-  createdAt        DateTime @default(now())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId      String   @unique @db.ObjectId
+  service        Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  embedding      Json // Array of floats from OpenAI embedding
+  content        String // Text used for embedding
+  tags           String[]
+  targetAudience String[] // couples, families, kids, groups
+  physicalLevel  String? // Easy, Moderate, Hard
+  bestTimeOfDay  String? // Morning, Sunset, Night
+  createdAt      DateTime @default(now())
 }
-
 
 model Booking {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -107,9 +122,9 @@ model Booking {
   total    Float
   currency String   @default("USD")
 
-  bookingStatus BookingStatus @default(PENDING_PAYMENT)
-  paymentStatus PaymentStatus @default(PENDING)
-  paymentProvider String      @default("MPGS")
+  bookingStatus   BookingStatus @default(PENDING_PAYMENT)
+  paymentStatus   PaymentStatus @default(PENDING)
+  paymentProvider String        @default("MPGS")
 
   mpgsOrderId          String?
   mpgsSessionId        String?
@@ -130,7 +145,7 @@ model Booking {
   invoiceEmailSendingAt DateTime?
   invoiceEmailError     String?
 
-  user      UserSnapshot
+  user UserSnapshot
 
   serviceId String?  @db.ObjectId
   service   Service? @relation(fields: [serviceId], references: [id])
@@ -141,6 +156,48 @@ model Booking {
   @@index([mpgsOrderId])
 }
 
+type ManualInvoiceItem {
+  description String
+  quantity    Float
+  unitPrice   Float
+  lineTotal   Float
+}
+
+model ManualInvoice {
+  id            String              @id @default(auto()) @map("_id") @db.ObjectId
+  invoiceNumber String              @unique
+  status        ManualInvoiceStatus @default(UNPAID)
+  paymentMethod ManualPaymentMethod @default(CASH)
+
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  customerAddress String?
+  travelDate      DateTime?
+
+  items          ManualInvoiceItem[]
+  currency       String              @default("USD")
+  subtotal       Float
+  discountAmount Float               @default(0)
+  taxRate        Float               @default(0)
+  taxAmount      Float               @default(0)
+  total          Float
+  amountPaid     Float               @default(0)
+
+  notes          String?
+  paidAt         DateTime?
+  emailSentAt    DateTime?
+  emailSendingAt DateTime?
+  emailError     String?
+
+  createdByClerkId String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([customerEmail])
+  @@index([status])
+}
 
 type UserSnapshot {
   id        String

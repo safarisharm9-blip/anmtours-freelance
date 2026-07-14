@@ -1,7 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { redirect, notFound } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { getCurrentAdmin } from "@/lib/admin-auth";
 import { EditServiceForm } from "@/components/service/edit-service-form";
 import { Link } from "@/i18n/navigation";
 
@@ -13,16 +13,8 @@ export default async function AdminEditServicePage({ params }: Props) {
   const { locale, id } = await params;
   setRequestLocale(locale);
 
-  const { userId } = await auth();
-  if (!userId) {
-    redirect("/");
-  }
-
-  const currentUser = await prisma.user.findUnique({
-    where: { clerkId: userId },
-    select: { role: true },
-  });
-  if (currentUser?.role !== "ADMIN") {
+  const currentAdmin = await getCurrentAdmin();
+  if (!currentAdmin) {
     redirect("/");
   }
 

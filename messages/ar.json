@@ -237,6 +237,86 @@
     "bookingSuccess": "تم إرسال طلب الحجز بنجاح",
     "bookingError": "تعذر بدء عملية الدفع"
   },
+  "AdminInvoices": {
+    "manualInvoices": "الفواتير اليدوية ({count})",
+    "createInvoice": "إنشاء فاتورة",
+    "editInvoice": "تعديل الفاتورة",
+    "description": "تفاصيل فاتورة العميل اليدوية",
+    "searchInvoices": "البحث في الفواتير",
+    "noInvoicesFound": "لم يتم العثور على فواتير.",
+    "invoice": "الفاتورة",
+    "customer": "العميل",
+    "created": "تاريخ الإنشاء",
+    "status": "الحالة",
+    "total": "الإجمالي",
+    "email": "البريد الإلكتروني",
+    "actionsLabel": "الإجراءات",
+    "lineItems": "بنود الفاتورة",
+    "addItem": "إضافة بند",
+    "cancel": "إلغاء",
+    "saving": "جارٍ الحفظ...",
+    "saveChanges": "حفظ التغييرات",
+    "fields": {
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "travelDate": "تاريخ السفر",
+      "address": "العنوان",
+      "description": "الوصف",
+      "quantity": "الكمية",
+      "unitPrice": "سعر الوحدة",
+      "amount": "المبلغ",
+      "currency": "العملة",
+      "paymentMethod": "طريقة الدفع",
+      "amountPaid": "المبلغ المدفوع",
+      "discount": "الخصم",
+      "taxRate": "نسبة الضريبة (%)",
+      "notes": "ملاحظات"
+    },
+    "paymentMethods": {
+      "CASH": "نقدًا",
+      "BANK_TRANSFER": "تحويل بنكي",
+      "CARD": "بطاقة",
+      "OTHER": "أخرى"
+    },
+    "statuses": {
+      "ALL": "كل الحالات",
+      "DRAFT": "مسودة",
+      "UNPAID": "غير مدفوعة",
+      "PARTIALLY_PAID": "مدفوعة جزئيًا",
+      "PAID": "مدفوعة",
+      "CANCELLED": "ملغاة",
+      "REFUNDED": "مستردة"
+    },
+    "summary": {
+      "subtotal": "المجموع الفرعي",
+      "discount": "الخصم",
+      "tax": "الضريبة ({rate}٪)",
+      "total": "الإجمالي",
+      "balanceDue": "الرصيد المستحق"
+    },
+    "emailStates": {
+      "sent": "تم الإرسال في {date}",
+      "failed": "فشل الإرسال",
+      "notSent": "لم يتم الإرسال"
+    },
+    "actions": {
+      "editInvoice": "تعديل الفاتورة",
+      "downloadPdf": "تنزيل ملف PDF",
+      "sendInvoice": "إرسال الفاتورة",
+      "sendInvoiceAgain": "إرسال الفاتورة مرة أخرى",
+      "deleteInvoice": "حذف الفاتورة",
+      "removeItem": "إزالة البند"
+    },
+    "messages": {
+      "sent": "تم إرسال الفاتورة إلى {email}.",
+      "deleteConfirm": "هل تريد حذف {invoiceNumber}؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "errors": {
+      "save": "تعذر حفظ الفاتورة.",
+      "send": "تعذر إرسال الفاتورة.",
+      "delete": "تعذر حذف الفاتورة."
+    }
+  },
     "testimonials": "اراء",
   "testimonials-descriptions": "تعرف على ما يقوله عملاؤنا عن تجربتهم في العمل معنا."
 }

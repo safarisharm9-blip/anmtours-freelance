@@ -4,6 +4,10 @@ type SendEmailInput = {
   subject: string;
   html: string;
   text: string;
+  attachments?: Array<{
+    filename: string;
+    content: string;
+  }>;
 };
 
 type ResendErrorBody = {
@@ -11,7 +15,14 @@ type ResendErrorBody = {
   name?: string;
 };
 
-export async function sendEmail({ to, bcc, subject, html, text }: SendEmailInput) {
+export async function sendEmail({
+  to,
+  bcc,
+  subject,
+  html,
+  text,
+  attachments,
+}: SendEmailInput) {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.INVOICE_FROM_EMAIL;
 
@@ -36,6 +47,7 @@ export async function sendEmail({ to, bcc, subject, html, text }: SendEmailInput
       subject,
       html,
       text,
+      ...(attachments?.length ? { attachments } : {}),
     }),
   });
 

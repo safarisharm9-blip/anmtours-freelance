@@ -13,6 +13,7 @@ import { FloatingActions } from "@/components/layout/FloatingActions";
 import { SyncUser } from "@/components/auth/sync-user";
 import { RtlSync } from "@/components/rtl-sync";
 import { DirectionProvider } from "@/components/ui/direction";
+import { isDevelopmentAdminBypassEnabled } from "@/lib/admin-auth";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -34,8 +35,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
 
   const { userId } = await auth();
-  let isAdmin = false;
-  if (userId) {
+  let isAdmin = isDevelopmentAdminBypassEnabled();
+  if (!isAdmin && userId) {
     try {
       const user = await prisma.user.findUnique({
         where: { clerkId: userId },

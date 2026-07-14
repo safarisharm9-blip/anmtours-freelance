@@ -18,3 +18,9 @@ export async function getAllBookings() {
     orderBy: { createdAt: "desc" },
   });
 }
+
+export async function getAllManualInvoices() {
+  return prisma.manualInvoice.findMany({
+    orderBy: { createdAt: "desc" },
+  });
+}

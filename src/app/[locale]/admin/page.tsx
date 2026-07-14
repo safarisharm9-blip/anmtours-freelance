@@ -1,8 +1,12 @@
 import { setRequestLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
-import { prisma } from "@/lib/prisma";
-import { getAllUsers, getAllServices, getAllBookings } from "@/lib/admin";
+import { getCurrentAdmin } from "@/lib/admin-auth";
+import {
+  getAllUsers,
+  getAllServices,
+  getAllBookings,
+  getAllManualInvoices,
+} from "@/lib/admin";
 import { getServiceDetailForLocale } from "@/lib/services";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import { getReviews } from "@/app/actions/reviews";
@@ -14,24 +18,17 @@ export default async function AdminPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { userId } = await auth();
-  if (!userId) {
+  const currentAdmin = await getCurrentAdmin();
+  if (!currentAdmin) {
     redirect("/");
   }
 
-  const currentUser = await prisma.user.findUnique({
-    where: { clerkId: userId },
-    select: { role: true },
-  });
-  if (currentUser?.role !== "ADMIN") {
-    redirect("/");
-  }
-
-  const [users, services, bookings, reviews] = await Promise.all([
+  const [users, services, bookings, reviews, manualInvoices] = await Promise.all([
     getAllUsers(),
     getAllServices(),
     getAllBookings(),
     getReviews(),
+    getAllManualInvoices(),
   ]);
 
   const servicesWithTitles = services.map((s) => ({
@@ -48,13 +45,14 @@ export default async function AdminPage({ params }: Props) {
   }));
 
   return (
-    <div className="max-w-7xl mx-auto px-12 md:px-0 py-12">
-      <h1 className="text-3xl font-bold mb-8">Admin Dash board</h1>
+    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-12">
+      <h1 className="mb-6 text-2xl font-bold sm:mb-8 sm:text-3xl">Admin Dash board</h1>
       <AdminDashboard
         users={users}
         services={servicesWithTitles}
         bookings={bookingsWithTitles}
         reviews={reviews}
+        manualInvoices={manualInvoices}
       />
     </div>
   );

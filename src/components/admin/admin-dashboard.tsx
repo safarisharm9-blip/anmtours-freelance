@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Link, useRouter } from "@/i18n/navigation";
-import { Users, Package, ChevronDown, Pencil, Trash2, Calendar, MessageSquare, Home } from "lucide-react";
+import { Users, Package, ChevronDown, Pencil, Trash2, Calendar, MessageSquare, Home, ReceiptText } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AdminBookings } from "./admin-bookings";
 import { AdminReviews } from "./admin-reviews";
 import { AdminHomepageSettings } from "./admin-homepage-settings";
+import { AdminManualInvoices, type ManualInvoiceView } from "./admin-manual-invoices";
 
 type User = {
   id: string;
@@ -81,6 +82,7 @@ type AdminDashboardProps = {
     createdAt: Date;
     updatedAt: Date;
   }>;
+  manualInvoices: ManualInvoiceView[];
 };
 
 export function AdminDashboard({
@@ -88,8 +90,9 @@ export function AdminDashboard({
   services,
   bookings,
   reviews,
+  manualInvoices,
 }: AdminDashboardProps) {
-  const [activeTab, setActiveTab] = useState<"users" | "services" | "bookings" | "reviews" | "homepage">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "services" | "bookings" | "invoices" | "reviews" | "homepage">("users");
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
@@ -114,11 +117,11 @@ export function AdminDashboard({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Tab selector */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="min-w-[200px] justify-between">
+          <Button variant="outline" className="w-full min-w-0 justify-between sm:w-auto sm:min-w-[200px]">
             {activeTab === "users" ? (
               <>
                 <Users className="size-4 mr-2" />
@@ -139,6 +142,11 @@ export function AdminDashboard({
                 <Home className="size-4 mr-2" />
                 Homepage
               </>
+            ) : activeTab === "invoices" ? (
+              <>
+                <ReceiptText className="size-4 mr-2" />
+                Invoices ({manualInvoices.length})
+              </>
             ) : (
               <>
                 <MessageSquare className="size-4 mr-2" />
@@ -148,7 +156,7 @@ export function AdminDashboard({
             <ChevronDown className="size-4 ml-2" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="min-w-[200px]">
+        <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-[200px] sm:w-auto">
           <DropdownMenuItem onClick={() => setActiveTab("users")}>
             <Users className="size-4 mr-2" />
             Users ({users.length})
@@ -160,6 +168,10 @@ export function AdminDashboard({
           <DropdownMenuItem onClick={() => setActiveTab("bookings")}>
             <Calendar className="size-4 mr-2" />
             Bookings ({bookings.length})
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setActiveTab("invoices")}>
+            <ReceiptText className="size-4 mr-2" />
+            Invoices ({manualInvoices.length})
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setActiveTab("homepage")}>
             <Home className="size-4 mr-2" />
@@ -180,7 +192,7 @@ export function AdminDashboard({
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[560px] text-sm">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left py-3 px-4">User</th>
@@ -248,7 +260,7 @@ export function AdminDashboard({
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full min-w-[760px] text-sm">
                 <thead>
                   <tr className="border-b">
                     <th className="text-left py-3 px-4">Service</th>
@@ -326,6 +338,10 @@ export function AdminDashboard({
       {/* Bookings table */}
       {activeTab === "bookings" && (
         <AdminBookings bookings={bookings} />
+      )}
+
+      {activeTab === "invoices" && (
+        <AdminManualInvoices invoices={manualInvoices} />
       )}
 
       {/* Reviews tab */}

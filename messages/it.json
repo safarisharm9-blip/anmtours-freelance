@@ -237,6 +237,86 @@
     "bookingSuccess": "Richiesta di prenotazione inviata",
     "bookingError": "Impossibile avviare il pagamento"
   },
+  "AdminInvoices": {
+    "manualInvoices": "Manual Invoices ({count})",
+    "createInvoice": "Create invoice",
+    "editInvoice": "Edit invoice",
+    "description": "Manual customer invoice details",
+    "searchInvoices": "Search invoices",
+    "noInvoicesFound": "No invoices found.",
+    "invoice": "Invoice",
+    "customer": "Customer",
+    "created": "Created",
+    "status": "Status",
+    "total": "Total",
+    "email": "Email",
+    "actionsLabel": "Actions",
+    "lineItems": "Line items",
+    "addItem": "Add item",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveChanges": "Save changes",
+    "fields": {
+      "name": "Name",
+      "phone": "Phone",
+      "travelDate": "Travel date",
+      "address": "Address",
+      "description": "Description",
+      "quantity": "Quantity",
+      "unitPrice": "Unit price",
+      "amount": "Amount",
+      "currency": "Currency",
+      "paymentMethod": "Payment method",
+      "amountPaid": "Amount paid",
+      "discount": "Discount",
+      "taxRate": "Tax rate (%)",
+      "notes": "Notes"
+    },
+    "paymentMethods": {
+      "CASH": "Cash",
+      "BANK_TRANSFER": "Bank transfer",
+      "CARD": "Card",
+      "OTHER": "Other"
+    },
+    "statuses": {
+      "ALL": "All statuses",
+      "DRAFT": "Draft",
+      "UNPAID": "Unpaid",
+      "PARTIALLY_PAID": "Partially paid",
+      "PAID": "Paid",
+      "CANCELLED": "Cancelled",
+      "REFUNDED": "Refunded"
+    },
+    "summary": {
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "tax": "Tax ({rate}%)",
+      "total": "Total",
+      "balanceDue": "Balance due"
+    },
+    "emailStates": {
+      "sent": "Sent {date}",
+      "failed": "Failed",
+      "notSent": "Not sent"
+    },
+    "actions": {
+      "editInvoice": "Edit invoice",
+      "downloadPdf": "Download PDF",
+      "sendInvoice": "Send invoice",
+      "sendInvoiceAgain": "Send invoice again",
+      "deleteInvoice": "Delete invoice",
+      "removeItem": "Remove item"
+    },
+    "messages": {
+      "sent": "Invoice sent to {email}.",
+      "deleteConfirm": "Delete {invoiceNumber}? This cannot be undone."
+    },
+    "errors": {
+      "save": "Failed to save invoice.",
+      "send": "Failed to send invoice.",
+      "delete": "Failed to delete invoice."
+    }
+  },
     "testimonials": "Testimonianze",
   "testimonials-descriptions": "Scopri cosa dicono i nostri clienti sulla loro esperienza di lavoro con noi."
 }
