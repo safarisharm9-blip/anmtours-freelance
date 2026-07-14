@@ -237,6 +237,23 @@
     "bookingSuccess": "Booking request submitted successfully",
     "bookingError": "Failed to start payment"
   },
+  "Metadata": {
+    "homeTitle": "Sharm El Sheikh Tours & Egypt Experiences",
+    "homeDescription": "Book curated Sharm El Sheikh tours, Red Sea adventures, desert safaris, diving trips, and unforgettable experiences across Egypt with A&M Tours.",
+    "destinationsTitle": "Egypt Tours & Travel Experiences",
+    "destinationsDescription": "Explore handpicked tours and activities in Sharm El Sheikh and across Egypt. Compare destinations, prices, durations, and experiences.",
+    "aboutTitle": "About Us",
+    "aboutDescription": "Meet A&M Tours, your local travel partner for carefully selected tours and personalized experiences in Sharm El Sheikh and across Egypt.",
+    "contactTitle": "Contact Us",
+    "contactDescription": "Contact A&M Tours in Sharm El Sheikh for tour recommendations, booking help, and personalized Egypt travel planning.",
+    "travelTipsTitle": "Egypt Travel Tips for Sharm El Sheikh Visitors",
+    "travelTipsDescription": "Plan your Egypt trip with practical advice about visas, packing, weather, local customs, safety, and emergency contacts.",
+    "tourFallbackDescription": "Discover this Egypt tour with A&M Tours, including trip details, pricing, highlights, and booking information."
+  },
+  "About": {
+    "title": "About Us",
+    "description": "We are a local travel agency dedicated to creating memorable, carefully planned experiences in Sharm El Sheikh and across Egypt."
+  },
   "AdminInvoices": {
     "manualInvoices": "Manual Invoices ({count})",
     "createInvoice": "Create invoice",

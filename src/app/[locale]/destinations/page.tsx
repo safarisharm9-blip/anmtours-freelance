@@ -1,12 +1,25 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { getServices } from "@/lib/services";
 import { DestinationsContent } from "@/components/destinations/destinations-content";
+import { buildPageMetadata } from "@/config/seo";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  return buildPageMetadata({
+    locale,
+    path: "destinations",
+    title: t("destinationsTitle"),
+    description: t("destinationsDescription"),
+  });
+}
 
 export default async function DestinationsPage({ params }: Props) {
   const { locale } = await params;

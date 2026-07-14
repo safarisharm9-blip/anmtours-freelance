@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { Mail, Phone, MapPin, ExternalLink, MessageCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SITE_CONFIG, getWhatsAppUrl } from "@/config/site";
+import { buildPageMetadata } from "@/config/seo";
 
 const MAPS_URL =
   "https://www.google.com/maps/place/A%26M+tours+-+Sharm+El-Sheikh/@28.042814,34.429247,17z/data=!3m1!4b1!4m6!3m5!1s0x14f5db0e25636ae5:0x813319a7517ba5d4!8m2!3d28.042814!4d34.429247!16s%2Fg%2F11tdwk2scs!17m2!4m1!1e3!18m1!1e1?entry=ttu";
@@ -12,6 +14,17 @@ const MAPS_EMBED_URL =
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  return buildPageMetadata({
+    locale,
+    path: "contact",
+    title: t("contactTitle"),
+    description: t("contactDescription"),
+  });
+}
 
 function formatPhoneDisplay(phone: string): string {
   if (phone.startsWith("20") && phone.length >= 12)

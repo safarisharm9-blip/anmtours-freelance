@@ -3,8 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SITE_CONFIG } from "@/config/site";
-import { SEO_CONFIG } from "@/config/seo";
-import { buildAlternates } from "@/config/seo";
+import { buildPageMetadata } from "@/config/seo";
 import {
   AlertCircle,
   FileText,
@@ -19,19 +18,12 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  const { canonical, languages } = buildAlternates("travel-tips");
-  const baseUrl = SEO_CONFIG.getBaseUrl();
-  return {
+  return buildPageMetadata({
+    locale,
+    path: "travel-tips",
     title: t("travelTipsTitle"),
     description: t("travelTipsDescription"),
-    alternates: { canonical, languages },
-    openGraph: {
-      url: canonical,
-      title: t("travelTipsTitle"),
-      description: t("travelTipsDescription"),
-      images: [{ url: `${baseUrl}${SEO_CONFIG.ogImage}` }],
-    },
-  };
+  });
 }
 
 export default async function TravelTipsPage({ params }: Props) {

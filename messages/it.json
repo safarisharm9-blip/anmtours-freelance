@@ -237,6 +237,23 @@
     "bookingSuccess": "Richiesta di prenotazione inviata",
     "bookingError": "Impossibile avviare il pagamento"
   },
+  "Metadata": {
+    "homeTitle": "Tour a Sharm El Sheikh ed esperienze in Egitto",
+    "homeDescription": "Prenota tour selezionati a Sharm El Sheikh, avventure sul Mar Rosso, safari nel deserto, immersioni ed esperienze indimenticabili in Egitto con A&M Tours.",
+    "destinationsTitle": "Tour ed esperienze di viaggio in Egitto",
+    "destinationsDescription": "Scopri tour e attività selezionati a Sharm El Sheikh e in tutto l'Egitto. Confronta destinazioni, prezzi, durata ed esperienze.",
+    "aboutTitle": "Chi siamo",
+    "aboutDescription": "Conosci A&M Tours, il tuo partner locale per tour selezionati ed esperienze personalizzate a Sharm El Sheikh e in Egitto.",
+    "contactTitle": "Contatti",
+    "contactDescription": "Contatta A&M Tours a Sharm El Sheikh per consigli sui tour, assistenza con le prenotazioni e pianificazione del viaggio in Egitto.",
+    "travelTipsTitle": "Consigli di viaggio per l'Egitto e Sharm El Sheikh",
+    "travelTipsDescription": "Organizza il tuo viaggio in Egitto con consigli pratici su visti, bagagli, clima, usanze locali, sicurezza e contatti di emergenza.",
+    "tourFallbackDescription": "Scopri questo tour in Egitto con A&M Tours: dettagli, prezzi, attrazioni principali e informazioni per la prenotazione."
+  },
+  "About": {
+    "title": "Chi siamo",
+    "description": "Siamo un'agenzia di viaggi locale dedicata a creare esperienze memorabili e curate a Sharm El Sheikh e in tutto l'Egitto."
+  },
   "AdminInvoices": {
     "manualInvoices": "Manual Invoices ({count})",
     "createInvoice": "Create invoice",

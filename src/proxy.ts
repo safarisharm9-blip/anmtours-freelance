@@ -16,7 +16,7 @@ export default clerkMiddleware((auth, req) => {
 export const config = {
   // Exclude API routes (except /api/bookings which needs Clerk auth), static files, and Next.js internals
   matcher: [
-    "/((?!api|_next|_vercel|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/((?!api|_next|_vercel|sitemap\\.xml|robots\\.txt|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/api/bookings",
   ],
 };

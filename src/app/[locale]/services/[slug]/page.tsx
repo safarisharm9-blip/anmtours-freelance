@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -12,12 +13,55 @@ import { ServiceHeader } from "@/components/service-detail/service-header";
 import { ServiceGallery } from "@/components/service-detail/service-gallery";
 import { ServiceTabs } from "@/components/service-detail/service-tabs";
 import { BookingSidebar } from "@/components/service-detail/booking-sidebar";
-import { DemandNotification } from "@/components/service-detail/demand-notification";
 import { HelpSection } from "@/components/service-detail/help-section";
+import { JsonLd } from "@/components/seo/json-ld";
+import {
+  absoluteUrl,
+  buildLocaleUrl,
+  buildPageMetadata,
+  NO_INDEX_METADATA,
+  SEO_CONFIG,
+} from "@/config/seo";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
+
+function plainText(value: string): string {
+  return value
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/[`*_>#~-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function metaDescription(value: string, fallback: string): string {
+  const text = plainText(value) || fallback;
+  return text.length > 160 ? `${text.slice(0, 157).trimEnd()}...` : text;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const service = await getServiceBySlug(slug);
+  if (!service) return NO_INDEX_METADATA;
+
+  const t = await getTranslations({ locale, namespace: "Metadata" });
+  const detail = getServiceDetailForLocale(service.details, locale);
+  const title = detail?.title || slug.replaceAll("-", " ");
+  const description = metaDescription(
+    detail?.description || "",
+    t("tourFallbackDescription")
+  );
+
+  return buildPageMetadata({
+    locale,
+    path: `services/${slug}`,
+    title,
+    description,
+    image: service.coverImage,
+  });
+}
 
 export default async function ServicePage({ params }: Props) {
   const { locale, slug } = await params;
@@ -30,13 +74,66 @@ export default async function ServicePage({ params }: Props) {
   const detail = getServiceDetailForLocale(service.details, locale);
   const title = detail?.title ?? "Untitled";
   const description = detail?.description ?? "";
+  const seoDescription = metaDescription(
+    description,
+    (await getTranslations({ locale, namespace: "Metadata" }))("tourFallbackDescription")
+  );
   const highlights = getArrayForLocale(service.highlights, locale);
   const includes = getArrayForLocale(service.includes, locale);
   const excludes = getArrayForLocale(service.excludes, locale);
   const goodToKnow = getArrayForLocale(service.goodToKnow, locale);
+  const serviceUrl = buildLocaleUrl(locale, `services/${slug}`);
+  const images = [service.coverImage, ...(service.images ?? [])]
+    .filter((image): image is string => Boolean(image))
+    .map(absoluteUrl);
+  const tourSchema = {
+    "@context": "https://schema.org",
+    "@type": "TouristTrip",
+    "@id": `${serviceUrl}#tour`,
+    name: title,
+    description: seoDescription,
+    url: serviceUrl,
+    image: images,
+    touristType: service.category || undefined,
+    provider: {
+      "@id": `${SEO_CONFIG.getBaseUrl()}/#organization`,
+    },
+    offers: {
+      "@type": "Offer",
+      url: serviceUrl,
+      price: service.priceAdult,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: t("home"),
+        item: buildLocaleUrl(locale),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: t("tours"),
+        item: buildLocaleUrl(locale, "destinations"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+        item: serviceUrl,
+      },
+    ],
+  };
 
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={[tourSchema, breadcrumbSchema]} />
       <div className="container mx-auto max-w-7xl px-4 py-8">
         <AnimatedSection fast>
           <ServiceBreadcrumbs
