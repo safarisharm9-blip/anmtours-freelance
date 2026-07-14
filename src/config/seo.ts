@@ -41,7 +41,18 @@ export const NO_INDEX_METADATA: Metadata = {
 
 export function buildLocaleUrl(locale: string, path = ""): string {
   const cleanPath = path.replace(/^\/+/, "").replace(/\/+$/, "");
-  return `${SEO_CONFIG.getBaseUrl()}/${locale}${cleanPath ? `/${cleanPath}` : ""}`;
+  const encodedPath = cleanPath
+    .split("/")
+    .map((segment) => {
+      try {
+        return encodeURIComponent(decodeURIComponent(segment));
+      } catch {
+        return encodeURIComponent(segment);
+      }
+    })
+    .join("/");
+
+  return `${SEO_CONFIG.getBaseUrl()}/${locale}${encodedPath ? `/${encodedPath}` : ""}`;
 }
 
 export function absoluteUrl(url: string): string {

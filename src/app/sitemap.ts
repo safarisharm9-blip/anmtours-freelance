@@ -17,6 +17,13 @@ const STATIC_PAGES = [
   { path: "contact", changeFrequency: "monthly", priority: 0.6 },
 ] as const;
 
+function xmlSafeUrl(url: string): string {
+  return url.replace(
+    /&(?!amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-f]+;)/gi,
+    "&amp;"
+  );
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const services = await getServices();
   const entries: MetadataRoute.Sitemap = [];
@@ -38,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const path = `services/${service.slug}`;
     const images = [service.coverImage, ...(service.images ?? [])]
       .filter((image): image is string => Boolean(image))
-      .map(absoluteUrl);
+      .map((image) => xmlSafeUrl(absoluteUrl(image)));
 
     for (const locale of routing.locales) {
       entries.push({
