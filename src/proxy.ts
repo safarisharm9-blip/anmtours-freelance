@@ -14,9 +14,10 @@ export default clerkMiddleware((auth, req) => {
 });
 
 export const config = {
-  // Exclude API routes (except /api/bookings which needs Clerk auth), static files, and Next.js internals
+  // Match pages and API routes so Clerk's auth() is available wherever it is used.
+  // API routes bypass next-intl in the middleware callback above.
   matcher: [
     "/((?!api|_next|_vercel|sitemap\\.xml|robots\\.txt|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/api/bookings",
+    "/api/:path*",
   ],
 };

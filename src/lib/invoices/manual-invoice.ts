@@ -1,4 +1,6 @@
 import { randomBytes } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import PDFDocument from "pdfkit";
 import { z } from "zod";
 import type {
@@ -11,6 +13,7 @@ import { sendEmail } from "@/lib/email/resend";
 import { prisma } from "@/lib/prisma";
 
 const INVOICE_SEND_LOCK_MS = 10 * 60 * 1000;
+const INVOICE_LOGO = readFileSync(join(process.cwd(), "public", "logo.jpeg"));
 const moneySchema = z.coerce.number().finite().min(0).max(100_000_000);
 
 export const manualInvoiceInputSchema = z.object({
@@ -181,9 +184,10 @@ export function generateManualInvoicePdf(invoice: ManualInvoice) {
     const accent = "#0f766e";
 
     doc.rect(0, 0, doc.page.width, 112).fill(dark);
-    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(24).text("A&M TOURS", 48, 40);
-    doc.font("Helvetica").fontSize(10).fillColor("#dbe4ee").text(SITE_CONFIG.contact.location, 48, 72);
-    doc.text(SITE_CONFIG.contact.email, 48, 87);
+    doc.image(INVOICE_LOGO, 48, 14, { fit: [84, 84] });
+    doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(18).text("A&M TOURS", 148, 30, { width: 180 });
+    doc.font("Helvetica").fontSize(9).fillColor("#dbe4ee").text(SITE_CONFIG.contact.location, 148, 58, { width: 180 });
+    doc.text(SITE_CONFIG.contact.email, 148, 75, { width: 180 });
     doc.fillColor("#ffffff").font("Helvetica-Bold").fontSize(23).text("INVOICE", 360, 40, { width: rightEdge - 360, align: "right" });
     doc.font("Helvetica").fontSize(10).fillColor("#dbe4ee").text(invoice.invoiceNumber, 330, 74, { width: rightEdge - 330, align: "right" });
 
