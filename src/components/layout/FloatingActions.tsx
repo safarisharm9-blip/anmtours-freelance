@@ -4,19 +4,19 @@ import React from "react";
 import { MessageCircle } from "lucide-react";
 
 export default function FloatingActions() {
-  // 1. ⚠️ ضع رقم الواتساب الخاص بك هنا (بالكود الدولي وبدون أصفار في البداية أو علامة +)
-  // مثال للرقم المصري: "201002003004" أو الرقم السعودي: "966501002003"
+  // WhatsApp Phone Number (with country code, no + or leading zeros)
+  // Example for Egypt: "201002003004" or Saudi: "966501002003"
   const phoneNumber = "201000000000";
 
-  // 2. نص الرسالة التلقائية بالإنجليزية للأجانب
+  // Auto message in English for international customers
   const message = encodeURIComponent("Hello, I would like to book a tour and inquire about your services.");
 
-  // الرابط الفعلي الصحيح الذي يفتح محادثتك مباشرة
+  // WhatsApp Direct Link
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
   return (
     <>
-      {/* تأثير نبض واهتزاز مستمر لجذب عين العميل فوراً وسهولة رؤية الزر */}
+      {/* Pulse and glow animation effect */}
       <style>{`
         @keyframes whatsapp-pulse {
           0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
@@ -32,7 +32,7 @@ export default function FloatingActions() {
         }
       `}</style>
 
-      {/* مكان تثبيت الزر أسفل الشاشة */}
+      {/* Floating Button - Bottom Right */}
       <div style={{ position: "fixed", bottom: "30px", right: "20px", zIndex: 1000 }}>
         <a
           href={whatsappUrl}
@@ -53,13 +53,12 @@ export default function FloatingActions() {
             fontWeight: "bold",
             fontSize: "15px",
             fontFamily: "sans-serif",
-            direction: "ltr"
           }}
         >
-          {/* أيقونة الواتساب من lucide-react */}
+          {/* WhatsApp Icon */}
           <MessageCircle size={22} strokeWidth={1.5} />
 
-          {/* العبارة النصية بالإنجليزية */}
+          {/* Button Text */}
           <span>Book Now on WhatsApp</span>
         </a>
       </div>
