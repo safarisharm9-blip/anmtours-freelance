@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Calendar, MapPin, Clock, Users, Droplets, TrendingUp } from "lucide-react";
-import { format, addDays } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +29,32 @@ export function AvailableDates({ tourDates, onSelectDate, selectedDate }: Availa
 
   const availableSpots = (date: TourDate) => {
     return date.maxSpots - date.bookedSpots;
+  };
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const dayName = days[date.getDay()];
+    const dayNum = String(date.getDate()).padStart(2, "0");
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+
+    return { dayName, dayNum, monthYear: `${month} ${year}`, fullDate: `${dayName}, ${month} ${dayNum}, ${year}` };
   };
 
   const getStatusColor = (status: string, spots: number) => {
@@ -99,11 +124,8 @@ export function AvailableDates({ tourDates, onSelectDate, selectedDate }: Availa
           style={{ scrollBehavior: "smooth" }}
         >
           {tourDates.map((date) => {
-            const dateObj = new Date(date.date);
             const spots = availableSpots(date);
-            const dayName = format(dateObj, "EEEE");
-            const dayNum = format(dateObj, "dd");
-            const monthYear = format(dateObj, "MMM yyyy");
+            const { dayName, dayNum, monthYear } = formatDate(date.date);
             const isSelected = selectedDate?.id === date.id;
 
             return (
@@ -228,7 +250,7 @@ export function AvailableDates({ tourDates, onSelectDate, selectedDate }: Availa
             <div>
               <p className="text-sm font-semibold text-gray-700">Selected Date:</p>
               <p className="text-lg font-bold text-blue-600">
-                {format(new Date(selectedDate.date), "EEEE, MMMM dd, yyyy")} • {selectedDate.startTime} - {selectedDate.endTime}
+                {formatDate(selectedDate.date).fullDate} • {selectedDate.startTime} - {selectedDate.endTime}
               </p>
               <p className="text-sm text-gray-600 mt-1">
                 {availableSpots(selectedDate)} spot{availableSpots(selectedDate) !== 1 ? "s" : ""} available
