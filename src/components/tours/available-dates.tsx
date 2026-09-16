@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calendar, MapPin, Clock, Users, Droplets, TrendingUp } from "lucide-react";
+import { Calendar, Clock, Droplets, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -25,8 +25,6 @@ interface AvailableDatesProps {
 }
 
 export function AvailableDates({ tourDates, onSelectDate, selectedDate }: AvailableDatesProps) {
-  const [scrollPosition, setScrollPosition] = useState(0);
-
   const availableSpots = (date: TourDate) => {
     return date.maxSpots - date.bookedSpots;
   };
@@ -74,22 +72,6 @@ export function AvailableDates({ tourDates, onSelectDate, selectedDate }: Availa
 
   return (
     <div className="w-full">
-      <style>{`
-        @keyframes slide-in {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .date-card {
-          animation: slide-in 0.3s ease-out;
-        }
-      `}</style>
-
       {/* Header */}
       <div className="mb-6">
         <h3 className="flex items-center gap-2 text-xl font-bold text-gray-900">
@@ -120,8 +102,7 @@ export function AvailableDates({ tourDates, onSelectDate, selectedDate }: Availa
         {/* Dates Container */}
         <div
           id="dates-scroll-container"
-          className="flex gap-3 overflow-x-auto pb-2 flex-1 scroll-smooth"
-          style={{ scrollBehavior: "smooth" }}
+          className="flex gap-3 overflow-x-auto pb-2 flex-1"
         >
           {tourDates.map((date) => {
             const spots = availableSpots(date);
@@ -132,7 +113,7 @@ export function AvailableDates({ tourDates, onSelectDate, selectedDate }: Availa
               <div
                 key={date.id}
                 className={cn(
-                  "date-card flex-shrink-0 w-48 rounded-xl border-2 overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg",
+                  "flex-shrink-0 w-48 rounded-xl border-2 overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg",
                   isSelected
                     ? "border-blue-500 bg-blue-50 shadow-lg"
                     : "border-gray-200 bg-white hover:border-blue-300"
