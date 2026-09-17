@@ -12,7 +12,7 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import { WishlistProvider } from "@/contexts/wishlist-context";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { FloatingActions } from "@/components/layout/FloatingActions";
+import  FloatingActions  from "@/components/layout/FloatingActions";
 import { SyncUser } from "@/components/auth/sync-user";
 import { JsonLd } from "@/components/seo/json-ld";
 import { DirectionProvider } from "@/components/ui/direction";
