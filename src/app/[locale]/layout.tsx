@@ -181,4 +181,4 @@ export default async function LocaleLayout({ children, params }: Props) {
     </ClerkProvider>
   );
 }
-export default FloatingActions;
+
